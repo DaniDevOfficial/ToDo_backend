@@ -5,12 +5,12 @@ const swaggerDocument = require('./swagger-output.json')
 const app = express()
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
-
 const fs = require('fs')
-
 const port = 3000
+
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.json())
 
 let tasks
 fs.readFile('tasks.json', 'utf8', (err, data) => {
@@ -36,7 +36,35 @@ app.get('/tasks', (req, resp) => {
   resp.json(allTasks).status(200)
 })
 
+app.post('/tasks', (req, resp) => {
+  /*
+ #swagger.tags = ["tasks"]
+ #swagger.summary = 'Post a new tasks'
+ #swagger.description = 'Post a new tasks as a json object'
+ #swagger.responses[201] = {description: "Task posted", schema:{$ref: "#/definitions/tasks"}}
+ #swagger.responses[400] = {description: "some values are null"}
+*/
+  let id = 5
+  while (tasks.map(task => task.id).includes(id)) {
+    id++
+  }
+  const createdTateTime = new Date().toISOString().split('Z')[0]
+  const finishedTateTime = null
+  const title = req.body.title ?? req.query.title
+  const description = req.body.description ?? req.query.description
+  const creatorId = 0
 
+  const newTask = {
+    id,
+    createdTateTime,
+    finishedTateTime,
+    title,
+    description,
+    creatorId
+  }
+  tasks.push(newTask)
+  resp.send(newTask).status(201)
+})
 app.listen(port, () => {
   console.log(`Is running on port ${port}`)
 })

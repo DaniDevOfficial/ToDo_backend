@@ -5,6 +5,8 @@
 /.pnp
 .pnp.js
 
+# generated
+swagger-output.json
 # testing
 /coverage
 

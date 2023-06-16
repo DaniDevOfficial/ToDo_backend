@@ -37,6 +37,54 @@
             "description": "json not found   no tasks available"
           }
         }
+      },
+      "post": {
+        "tags": [
+          "tasks"
+        ],
+        "summary": "Post a new tasks",
+        "description": "Post a new tasks as a json object",
+        "parameters": [
+          {
+            "name": "title",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Task posted",
+            "schema": {
+              "$ref": "#/definitions/tasks"
+            }
+          },
+          "400": {
+            "description": "some values are null"
+          }
+        }
       }
     }
   },
@@ -86,11 +134,11 @@
           "type": "number",
           "example": 0
         },
-        "created_date_time": {
+        "createdTateTime": {
           "type": "string",
           "example": "now"
         },
-        "finished_date_time": {},
+        "finishedDateTime": {},
         "title": {
           "type": "string",
           "example": "Create some random data"
@@ -99,18 +147,18 @@
           "type": "string",
           "example": "Create some random data for the documentation"
         },
-        "creator_id": {
+        "creatorId": {
           "type": "number",
           "example": 0
         }
       },
       "required": [
         "id",
-        "created_date_time",
-        "finished_date_time",
+        "createdTateTime",
+        "finishedDateTime",
         "title",
         "description",
-        "creator_id"
+        "creatorId"
       ]
     },
     "lends": {

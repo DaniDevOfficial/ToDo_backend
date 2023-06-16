@@ -27,11 +27,11 @@ const config = {
     },
     tasks: {
       $id: 0,
-      $created_date_time: 'now',
-      $finished_date_time: null,
+      $createdTateTime: 'now',
+      $finishedDateTime: null,
       $title: 'Create some random data',
       $description: 'Create some random data for the documentation',
-      $creator_id: 0
+      $creatorId: 0
     },
     lends: {
       $id: 100,
