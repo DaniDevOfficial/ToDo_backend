@@ -63,6 +63,22 @@ app.post('/login', (req, resp) => {
   resp.send('You are now logged in. Happy hacking').status(201)
 })
 
+app.get('/verify', (req, resp) => {
+  /*
+ #swagger.tags = ["login"]
+ #swagger.summary = 'Verify session token'
+ #swagger.description = 'Verifies the session token given during the login part'
+ #swagger.responses[200] = {description: "Verification sucessful"}}
+ #swagger.responses[401] = {description: "Verification failed"}
+*/
+  if (!req.session.email) {
+    return resp.send('failed').status(401)
+  }
+  resp.status(200).send('verified')
+})
+
+
+
 // temp
 // temp
 app.get('/tasks', (req, resp) => {
