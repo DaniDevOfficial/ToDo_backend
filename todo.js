@@ -83,7 +83,6 @@ app.get('/verify', (req, resp) => {
   */
   if (!req.session.email) {
     console.error('Error: User is not logged in / doesnt have a session')
-
     return resp.send('failed').status(401)
   }
   resp.status(200).send('verified')
@@ -138,8 +137,12 @@ app.post('/tasks', (req, resp) => {
   const finishedDateTime = null
   const title = req.body.title ?? req.query.title
   const description = req.body.description ?? req.query.description
-  const creatorId = 0
+  const creatorId = parseInt(req.session.id)
 
+  if (!title || !description) {
+    console.error('Error: user has not input either a title or a description')
+    resp.sendStatus(400)
+  }
   const newTask = {
     id,
     createdDateTime,
@@ -176,22 +179,32 @@ app.put('/tasks/:id', (req, resp) => {
    #swagger.description = 'Put a specific task by its id'
    #swagger.responses[200] = {description: "Task updated", schema:{$ref: "#/definitions/tasks"}}
    #swagger.responses[404] = {description: "id does not exist"}
+   #swagger.responses[400] = {description: "Some values are null"}
   */
   let id = parseInt(req.params.id)
   const taskIndex = tasks.findIndex((tasks) => tasks.id === id)
   const specificTask = tasks.find(tasks => tasks.id === id)
+  id = req.body.id
+  const createdDateTime = req.body.createdDateTime
+  const finishedDateTime = req.body.finishedDateTime
+  const title = req.body.title
+  const description = req.body.description
+  const creatorId = req.body.creatorId
   if (!specificTask) {
-    console.error('Error: ')
+    console.error('Error: this task does not exist')
     resp.sendStatus(404)
   }
-
+  if (!id || !createdDateTime || !finishedDateTime || !title || !description || !creatorId) {
+    console.error('Error: some of the values are null')
+    resp.sendStatus(400)
+  }
   const updatedTask = {
-    id: req.body.id,
-    createdDateTime: req.body.createdDateTime,
-    finishedDateTime: req.body.finishedDateTime,
-    title: req.body.title,
-    description: req.body.description,
-    creatorId: req.body.creatorId
+    id,
+    createdDateTime,
+    finishedDateTime,
+    title,
+    description,
+    creatorId
   }
   while (tasks.map(task => task.id).includes(id)) {
     id++
@@ -212,7 +225,7 @@ app.delete('/tasks/:id', (req, resp) => {
   const taskIndex = tasks.findIndex((tasks) => tasks.id === id)
   const specificTask = tasks.find(tasks => tasks.id === id)
   if (!specificTask) {
-    console.error('Error: ')
+    console.error('Error: this task does not exist')
     resp.sendStatus(404)
   }
 
@@ -221,9 +234,9 @@ app.delete('/tasks/:id', (req, resp) => {
 })
 
 app.use((req, resp) => {
-    console.error('Error: User tried to get a unused endpoint')
+  console.error('Error: User tried to get a unused endpoint')
   resp.sendStatus(404)
-})
+}) // chatgpt generated
 app.listen(port, () => {
   console.log(`Is running on port ${port}`)
 })
