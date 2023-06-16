@@ -27,9 +27,16 @@ fs.readFile('tasks.json', 'utf8', (err, data) => {
     return
   }
 
-  // eslint-disable-next-line no-undef
   tasks = JSON.parse(data).tasks
   logins = JSON.parse(data).logins
+})
+
+// only checks if you are logged in doesnt work the way intended
+app.all('/tasks/*', (request, response, next) => {
+  if (!request.session.email) {
+    response.sendStatus(401)
+  }
+  next()
 })
 app.post('/login', (req, resp) => {
   /*
@@ -92,8 +99,6 @@ app.delete('/logout', (req, resp) => {
   resp.status(200).send('Logged out sucessfully!')
 })
 
-// temp
-// temp
 app.get('/tasks', (req, resp) => {
   /*
  #swagger.tags = ["tasks"]
