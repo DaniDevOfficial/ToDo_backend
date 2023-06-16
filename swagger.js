@@ -27,11 +27,16 @@ const config = {
     },
     tasks: {
       $id: 0,
-      $createdDateTime: 'now',
+      $createdDateTime: '2023-06-15T8:52:13.422',
       $finishedDateTime: null,
       $title: 'Create some random data',
       $description: 'Create some random data for the documentation',
       $creatorId: 0
+    },
+    account: {
+      $id: 1,
+      $email: 'john.doe@example.com',
+      $password: 'm295'
     }
   }
 }

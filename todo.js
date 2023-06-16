@@ -33,11 +33,11 @@ fs.readFile('tasks.json', 'utf8', (err, data) => {
 })
 app.post('/login', (req, resp) => {
   /*
- #swagger.tags = ["login"]
+ #swagger.tags = ["account"]
  #swagger.summary = 'Login with email and password'
  #swagger.description = 'Login with email and password. If the email doesnt have a account one will be made with the password m295'
- #swagger.responses[200] = {description: "Logged in sucessfully", schema:{$ref: "#/definitions/tasks"}}
- #swagger.responses[404] = {description: "json not found // no tasks available"}
+ #swagger.responses[200] = {description: "Logged in sucessfully", schema:{$ref: "#/definitions/account"}}
+ #swagger.responses[401] = {description: "Wrong password entered (its always m295)"}
 */
   const email = req.body.email
   const password = req.body.password
@@ -65,7 +65,7 @@ app.post('/login', (req, resp) => {
 
 app.get('/verify', (req, resp) => {
   /*
- #swagger.tags = ["login"]
+ #swagger.tags = ["account"]
  #swagger.summary = 'Verify session token'
  #swagger.description = 'Verifies the session token given during the login part'
  #swagger.responses[200] = {description: "Verification sucessful"}}
@@ -77,7 +77,20 @@ app.get('/verify', (req, resp) => {
   resp.status(200).send('verified')
 })
 
-
+app.delete('/logout', (req, resp) => {
+  /*
+ #swagger.tags = ["account"]
+ #swagger.summary = 'Logout while logged in'
+ #swagger.description = 'Login with email and password. If the email doesnt have a account one will be made with the password m295'
+ #swagger.responses[200] = {description: "Logged in sucessfully", schema:{$ref: "#/definitions/tasks"}}
+ #swagger.responses[404] = {description: "json not found // no tasks available"}
+*/
+  if (!req.session.email) {
+    return resp.send('you are not logged in').status(401)
+  }
+  req.session.destroy()
+  resp.status(200).send('Logged out sucessfully!')
+})
 
 // temp
 // temp
