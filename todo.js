@@ -34,22 +34,25 @@ fs.readFile('tasks.json', 'utf8', (err, data) => {
 // only checks if you are logged in doesnt work the way intended
 app.all('/tasks/*', (request, response, next) => {
   if (!request.session.email) {
+    console.error('Error: the user doesnt have the right to do that')
     response.sendStatus(401)
   }
   next()
 })
 app.post('/login', (req, resp) => {
   /*
- #swagger.tags = ["account"]
- #swagger.summary = 'Login with email and password'
- #swagger.description = 'Login with email and password. If the email doesnt have a account one will be made with the password m295'
- #swagger.responses[200] = {description: "Logged in sucessfully", schema:{$ref: "#/definitions/account"}}
- #swagger.responses[401] = {description: "Wrong password entered (its always m295)"}
-*/
+   #swagger.tags = ["account"]
+   #swagger.summary = 'Login with email and password'
+   #swagger.description = 'Login with email and password. If the email doesnt have a account one will be made with the password m295'
+   #swagger.responses[200] = {description: "Logged in sucessfully", schema:{$ref: "#/definitions/account"}}
+   #swagger.responses[401] = {description: "Wrong password entered (its always m295)"}
+  */
   const email = req.body.email
   const password = req.body.password
   const emailExistance = logins.some(login => Object.keys(login) && login.email === email) // chatgpt generated
   if (password !== 'm295') {
+    console.error('Error: Password is wrong')
+
     return resp.send('password incorrect (it has to be m295)').status(401)
   }
   if (!emailExistance) {
@@ -72,13 +75,15 @@ app.post('/login', (req, resp) => {
 
 app.get('/verify', (req, resp) => {
   /*
- #swagger.tags = ["account"]
- #swagger.summary = 'Verify session token'
- #swagger.description = 'Verifies the session token given during the login part'
- #swagger.responses[200] = {description: "Verification sucessful"}}
- #swagger.responses[401] = {description: "Verification failed"}
-*/
+   #swagger.tags = ["account"]
+   #swagger.summary = 'Verify session token'
+   #swagger.description = 'Verifies the session token given during the login part'
+   #swagger.responses[200] = {description: "Verification sucessful"}}
+   #swagger.responses[401] = {description: "Verification failed"}
+  */
   if (!req.session.email) {
+    console.error('Error: User is not logged in / doesnt have a session')
+
     return resp.send('failed').status(401)
   }
   resp.status(200).send('verified')
@@ -86,13 +91,15 @@ app.get('/verify', (req, resp) => {
 
 app.delete('/logout', (req, resp) => {
   /*
- #swagger.tags = ["account"]
- #swagger.summary = 'Logout while logged in'
- #swagger.description = 'Login with email and password. If the email doesnt have a account one will be made with the password m295'
- #swagger.responses[200] = {description: "Logged in sucessfully", schema:{$ref: "#/definitions/tasks"}}
- #swagger.responses[404] = {description: "json not found // no tasks available"}
-*/
+   #swagger.tags = ["account"]
+   #swagger.summary = 'Logout while logged in'
+   #swagger.description = 'Login with email and password. If the email doesnt have a account one will be made with the password m295'
+   #swagger.responses[200] = {description: "Logged in sucessfully", schema:{$ref: "#/definitions/tasks"}}
+   #swagger.responses[404] = {description: "json not found // no tasks available"}
+  */
   if (!req.session.email) {
+    console.error('Error: User is not logged in so he cant log out')
+
     return resp.send('you are not logged in').status(401)
   }
   req.session.destroy()
@@ -101,25 +108,28 @@ app.delete('/logout', (req, resp) => {
 
 app.get('/tasks', (req, resp) => {
   /*
- #swagger.tags = ["tasks"]
- #swagger.summary = 'Get all tasks'
- #swagger.description = 'Get all tasks from the json file and displays them'
- #swagger.responses[200] = {description: "Json displayed", schema:{$ref: "#/definitions/tasks"}}
- #swagger.responses[404] = {description: "json not found // no tasks available"}
-*/
-  if (!tasks) return resp.sendStatus(404)
+   #swagger.tags = ["tasks"]
+   #swagger.summary = 'Get all tasks'
+   #swagger.description = 'Get all tasks from the json file and displays them'
+   #swagger.responses[200] = {description: "Json displayed", schema:{$ref: "#/definitions/tasks"}}
+   #swagger.responses[404] = {description: "json not found // no tasks available"}
+  */
+  if (!tasks) {
+    console.error('Error: There are no tasks')
+    resp.sendStatus(404)
+  }
   const allTasks = tasks.map((tasks) => tasks)
   resp.json(allTasks).status(200)
 })
 
 app.post('/tasks', (req, resp) => {
   /*
- #swagger.tags = ["tasks"]
- #swagger.summary = 'Post a new tasks'
- #swagger.description = 'Post a new tasks as a json object'
- #swagger.responses[201] = {description: "Task posted", schema:{$ref: "#/definitions/tasks"}}
- #swagger.responses[400] = {description: "some values are null"}
-*/
+   #swagger.tags = ["tasks"]
+   #swagger.summary = 'Post a new tasks'
+   #swagger.description = 'Post a new tasks as a json object'
+   #swagger.responses[201] = {description: "Task posted", schema:{$ref: "#/definitions/tasks"}}
+   #swagger.responses[400] = {description: "some values are null"}
+  */
   let id = 5
   while (tasks.map(task => task.id).includes(id)) {
     id++
@@ -144,30 +154,36 @@ app.post('/tasks', (req, resp) => {
 
 app.get('/tasks/:id', (req, resp) => {
   /*
- #swagger.tags = ["tasks"]
- #swagger.summary = 'Get a specific task'
- #swagger.description = 'Get a specific task by its id'
- #swagger.responses[201] = {description: "Task found", schema:{$ref: "#/definitions/tasks"}}
- #swagger.responses[404] = {description: "id does not exist"}
-*/
+   #swagger.tags = ["tasks"]
+   #swagger.summary = 'Get a specific task'
+   #swagger.description = 'Get a specific task by its id'
+   #swagger.responses[201] = {description: "Task found", schema:{$ref: "#/definitions/tasks"}}
+   #swagger.responses[404] = {description: "id does not exist"}
+  */
   const id = parseInt(req.params.id)
   const specificTask = tasks.find(tasks => tasks.id === id)
-  if (!specificTask) return resp.sendStatus(404)
+  if (!specificTask) {
+    console.error('Error: the chosen task does not exist ')
+    resp.sendStatus(404)
+  }
   resp.json(specificTask)
 })
 
 app.put('/tasks/:id', (req, resp) => {
   /*
- #swagger.tags = ["tasks"]
- #swagger.summary = 'Put a specific task'
- #swagger.description = 'Put a specific task by its id'
- #swagger.responses[200] = {description: "Task updated", schema:{$ref: "#/definitions/tasks"}}
- #swagger.responses[404] = {description: "id does not exist"}
-*/
+   #swagger.tags = ["tasks"]
+   #swagger.summary = 'Put a specific task'
+   #swagger.description = 'Put a specific task by its id'
+   #swagger.responses[200] = {description: "Task updated", schema:{$ref: "#/definitions/tasks"}}
+   #swagger.responses[404] = {description: "id does not exist"}
+  */
   let id = parseInt(req.params.id)
   const taskIndex = tasks.findIndex((tasks) => tasks.id === id)
   const specificTask = tasks.find(tasks => tasks.id === id)
-  if (!specificTask) return resp.sendStatus(404)
+  if (!specificTask) {
+    console.error('Error: ')
+    resp.sendStatus(404)
+  }
 
   const updatedTask = {
     id: req.body.id,
@@ -186,22 +202,26 @@ app.put('/tasks/:id', (req, resp) => {
 
 app.delete('/tasks/:id', (req, resp) => {
   /*
- #swagger.tags = ["tasks"]
- #swagger.summary = 'Delete a specific task'
- #swagger.description = 'Delete a specific task by its id'
- #swagger.responses[204] = {description: "Task Deleted", schema:{$ref: "#/definitions/tasks"}}
- #swagger.responses[404] = {description: "id does not exist"}
-*/
+   #swagger.tags = ["tasks"]
+   #swagger.summary = 'Delete a specific task'
+   #swagger.description = 'Delete a specific task by its id'
+   #swagger.responses[204] = {description: "Task Deleted", schema:{$ref: "#/definitions/tasks"}}
+   #swagger.responses[404] = {description: "id does not exist"}
+  */
   const id = parseInt(req.params.id)
   const taskIndex = tasks.findIndex((tasks) => tasks.id === id)
   const specificTask = tasks.find(tasks => tasks.id === id)
-  if (!specificTask) return resp.sendStatus(404)
+  if (!specificTask) {
+    console.error('Error: ')
+    resp.sendStatus(404)
+  }
 
   tasks.splice(taskIndex, 1)
   resp.sendStatus(204)
 })
 
 app.use((req, resp) => {
+    console.error('Error: User tried to get a unused endpoint')
   resp.sendStatus(404)
 })
 app.listen(port, () => {
