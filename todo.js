@@ -1,4 +1,5 @@
 const express = require('express')
+const expressSession = require('express-session')
 const bodyParser = require('body-parser')
 const swaggerUi = require('swagger-ui-express')
 const swaggerDocument = require('./swagger-output.json')
@@ -11,8 +12,15 @@ const port = 3000
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.json())
+app.use(expressSession({
+  secret: 'thisisnotasecret',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {}
+}))
 
-let tasks
+let tasks = []
+let logins = []
 fs.readFile('tasks.json', 'utf8', (err, data) => {
   if (err) {
     console.error('Error reading file:', err)
@@ -21,8 +29,42 @@ fs.readFile('tasks.json', 'utf8', (err, data) => {
 
   // eslint-disable-next-line no-undef
   tasks = JSON.parse(data).tasks
+  logins = JSON.parse(data).logins
+})
+app.post('/login', (req, resp) => {
+  /*
+ #swagger.tags = ["login"]
+ #swagger.summary = 'Login with email and password'
+ #swagger.description = 'Login with email and password. If the email doesnt have a account one will be made with the password m295'
+ #swagger.responses[200] = {description: "Logged in sucessfully", schema:{$ref: "#/definitions/tasks"}}
+ #swagger.responses[404] = {description: "json not found // no tasks available"}
+*/
+  const email = req.body.email
+  const password = req.body.password
+  const emailExistance = logins.some(login => Object.keys(login) && login.email === email) // chatgpt generated
+  if (password !== 'm295') {
+    return resp.send('password incorrect (it has to be m295)').status(401)
+  }
+  if (!emailExistance) {
+    // if email is not in the json it will create a account
+    let id = 1
+    while (logins.map(logins => logins.id).includes(id)) {
+      id++
+    }
+    const newLoggin = {
+      id,
+      email,
+      password: 'm295'
+    }
+    logins.push(newLoggin)
+  }
+
+  req.session.email = email
+  resp.send('You are now logged in. Happy hacking').status(201)
 })
 
+// temp
+// temp
 app.get('/tasks', (req, resp) => {
   /*
  #swagger.tags = ["tasks"]
@@ -123,6 +165,10 @@ app.delete('/tasks/:id', (req, resp) => {
 
   tasks.splice(taskIndex, 1)
   resp.sendStatus(204)
+})
+
+app.use((req, resp) => {
+  resp.sendStatus(404)
 })
 app.listen(port, () => {
   console.log(`Is running on port ${port}`)

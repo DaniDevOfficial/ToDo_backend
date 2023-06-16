@@ -4,20 +4,15 @@
 # Projektdokumentation
 Dieses Repository enthält die Dokumentation für das Projekt ToDo Backend. Hier finden Sie Informationen zur Einrichtung der Entwicklungsumgebung sowie zur Laufzeitumgebung. Zusätzlich sind die Endpunkte des Projekts dokumentiert.
 
-## Inhaltsverzeichnis
-1. Einrichtung der Entwicklungsumgebung
-2. Laufzeitumgebung
-3. Dokumentation der Endpunkte
 ## Einrichtung der Entwicklungsumgebung
 Laufzeitumgebung
 Dokumentation der Endpunkte
 Einrichtung der Entwicklungsumgebung
 Um das Projekt Projektname lokal ausführen und entwickeln zu können, folgen Sie bitte den nachstehenden Schritten:
 
-Schritt 1: git clone https://github.com/David21092/ToDo_backend.git
-Schritt 2: npm install body-parser express nodemon swagger-autogen swagger-ui-express 
-Schritt 3: npm start // das wird den nodemon starten und automatisch erneuren
-...
+* Schritt 1: git clone https://github.com/David21092/ToDo_backend.git
+* Schritt 2: npm install body-parser express nodemon swagger-autogen swagger-ui-express express-session
+* Schritt 3: npm start // das wird den nodemon starten und automatisch erneuren
 ## Laufzeitumgebung
 Die Laufzeitumgebung für dieses Projekt umfasst die folgenden Komponenten:
 

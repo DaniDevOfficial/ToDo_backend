@@ -2,13 +2,137 @@
     "tasks": [
         {
             "id": 0,
-            "createdDateTime": "now",
+            "createdDateTime": "2023-06-16T8:52:13.422",
             "finishedDateTime": null,
             "title": "Create ToDo",
             "description": "Create a ToDo app in js as a Backend with express",
             "creatorId": 0
+            },
+            {
+            "id": 1,
+            "createdDateTime": "2023-06-16T9:15:21.173",
+            "finishedDateTime": null,
+            "title": "Implement User Authentication",
+            "description": "Implement user authentication functionality using JWT",
+            "creatorId": 1
+            },
+            {
+            "id": 2,
+            "createdDateTime": "2023-06-16T9:32:45.567",
+            "finishedDateTime": null,
+            "title": "Add Task Priority",
+            "description": "Enhance the ToDo app by adding task priority feature",
+            "creatorId": 0
+            },
+            {
+            "id": 3,
+            "createdDateTime": "2023-06-16T10:01:09.789",
+            "finishedDateTime": null,
+            "title": "Implement Task Due Dates",
+            "description": "Implement functionality to set due dates for tasks",
+            "creatorId": 2
+            },
+            {
+            "id": 4,
+            "createdDateTime": "2023-06-16T10:24:37.941",
+            "finishedDateTime": null,
+            "title": "Create Task Categories",
+            "description": "Create categories for organizing tasks",
+            "creatorId": 1
+            },
+            {
+            "id": 5,
+            "createdDateTime": "2023-06-16T10:49:52.215",
+            "finishedDateTime": null,
+            "title": "Implement Task Reminders",
+            "description": "Add reminder functionality for tasks",
+            "creatorId": 0
+            },
+            {
+            "id": 6,
+            "createdDateTime": "2023-06-16T11:12:16.398",
+            "finishedDateTime": null,
+            "title": "Refactor Codebase",
+            "description": "Refactor the codebase to improve code structure and readability",
+            "creatorId": 2
+            },
+            {
+            "id": 7,
+            "createdDateTime": "2023-06-16T11:38:41.581",
+            "finishedDateTime": null,
+            "title": "Add Task Notes",
+            "description": "Allow users to add notes to tasks",
+            "creatorId": 1
+            },
+            {
+            "id": 8,
+            "createdDateTime": "2023-06-16T12:01:55.724",
+            "finishedDateTime": null,
+            "title": "Implement Task Filtering",
+            "description": "Implement filtering options for tasks based on different criteria",
+            "creatorId": 0
+            },
+            {
+            "id": 9,
+            "createdDateTime": "2023-06-16T12:28:20.912",
+            "finishedDateTime": null,
+            "title": "Optimize Database Queries",
+            "description": "Optimize database queries for better performance",
+            "creatorId": 2
+            }
+
+
+    ],
+    "logins": [
+        {
+          "id": 1,
+          "email": "john.doe@example.com",
+          "password": "m295"
+        },
+        {
+          "id": 2,
+          "email": "jane.doe@example.com",
+          "password": "m295"
+        },
+        {
+          "id": 3,
+          "email": "michael.smith@example.com",
+          "password": "m295"
+        },
+        {
+          "id": 4,
+          "email": "emma.johnson@example.com",
+          "password": "m295"
+        },
+        {
+          "id": 5,
+          "email": "alexander.wilson@example.com",
+          "password": "m295"
+        },
+        {
+          "id": 6,
+          "email": "sophia.davis@example.com",
+          "password": "m295"
+        },
+        {
+          "id": 7,
+          "email": "william.thompson@example.com",
+          "password": "m295"
+        },
+        {
+          "id": 8,
+          "email": "olivia.hernandez@example.com",
+          "password": "m295"
+        },
+        {
+          "id": 9,
+          "email": "james.garcia@example.com",
+          "password": "m295"
+        },
+        {
+          "id": 10,
+          "email": "ava.martinez@example.com",
+          "password": "m295"
         }
-
-
-    ]
+      ]
 }
