@@ -65,6 +65,20 @@ app.post('/tasks', (req, resp) => {
   tasks.push(newTask)
   resp.send(newTask).status(201)
 })
+
+app.get('/tasks/:id', (req, resp) => {
+  /*
+ #swagger.tags = ["tasks"]
+ #swagger.summary = 'Get a specific task'
+ #swagger.description = 'Get a specific task by its id'
+ #swagger.responses[201] = {description: "Task found", schema:{$ref: "#/definitions/tasks"}}
+ #swagger.responses[400] = {description: "id does not exist"}
+*/
+  const id = parseInt(req.params.id)
+  const specificTask = tasks.find(object => object.id === id)
+  if (!specificTask) return resp.sendStatus(400)
+  resp.json(specificTask)
+})
 app.listen(port, () => {
   console.log(`Is running on port ${port}`)
 })
