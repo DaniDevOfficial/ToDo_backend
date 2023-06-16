@@ -72,11 +72,11 @@ app.get('/tasks/:id', (req, resp) => {
  #swagger.summary = 'Get a specific task'
  #swagger.description = 'Get a specific task by its id'
  #swagger.responses[201] = {description: "Task found", schema:{$ref: "#/definitions/tasks"}}
- #swagger.responses[400] = {description: "id does not exist"}
+ #swagger.responses[404] = {description: "id does not exist"}
 */
   const id = parseInt(req.params.id)
   const specificTask = tasks.find(tasks => tasks.id === id)
-  if (!specificTask) return resp.sendStatus(400)
+  if (!specificTask) return resp.sendStatus(404)
   resp.json(specificTask)
 })
 
@@ -86,12 +86,12 @@ app.put('/tasks/:id', (req, resp) => {
  #swagger.summary = 'Put a specific task'
  #swagger.description = 'Put a specific task by its id'
  #swagger.responses[200] = {description: "Task updated", schema:{$ref: "#/definitions/tasks"}}
- #swagger.responses[400] = {description: "id does not exist"}
+ #swagger.responses[404] = {description: "id does not exist"}
 */
   let id = parseInt(req.params.id)
   const taskIndex = tasks.findIndex((tasks) => tasks.id === id)
   const specificTask = tasks.find(tasks => tasks.id === id)
-  if (!specificTask) return resp.sendStatus(400)
+  if (!specificTask) return resp.sendStatus(404)
 
   const updatedTask = {
     id: req.body.id,
@@ -106,6 +106,23 @@ app.put('/tasks/:id', (req, resp) => {
   }
   tasks.splice(taskIndex, 1, updatedTask)
   resp.json(updatedTask).sendStatus(200)
+})
+
+app.delete('/tasks/:id', (req, resp) => {
+  /*
+ #swagger.tags = ["tasks"]
+ #swagger.summary = 'Delete a specific task'
+ #swagger.description = 'Delete a specific task by its id'
+ #swagger.responses[204] = {description: "Task Deleted", schema:{$ref: "#/definitions/tasks"}}
+ #swagger.responses[404] = {description: "id does not exist"}
+*/
+  const id = parseInt(req.params.id)
+  const taskIndex = tasks.findIndex((tasks) => tasks.id === id)
+  const specificTask = tasks.find(tasks => tasks.id === id)
+  if (!specificTask) return resp.sendStatus(404)
+
+  tasks.splice(taskIndex, 1)
+  resp.sendStatus(204)
 })
 app.listen(port, () => {
   console.log(`Is running on port ${port}`)
