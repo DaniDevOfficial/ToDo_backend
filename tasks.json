@@ -2,8 +2,8 @@
     "tasks": [
         {
             "id": 0,
-            "createdTateTime": "now",
-            "finishedTateTime": null,
+            "createdDateTime": "now",
+            "finishedDateTime": null,
             "title": "Create ToDo",
             "description": "Create a ToDo app in js as a Backend with express",
             "creatorId": 0

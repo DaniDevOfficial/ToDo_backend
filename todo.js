@@ -48,16 +48,16 @@ app.post('/tasks', (req, resp) => {
   while (tasks.map(task => task.id).includes(id)) {
     id++
   }
-  const createdTateTime = new Date().toISOString().split('Z')[0]
-  const finishedTateTime = null
+  const createdDateTime = new Date().toISOString().split('Z')[0]
+  const finishedDateTime = null
   const title = req.body.title ?? req.query.title
   const description = req.body.description ?? req.query.description
   const creatorId = 0
 
   const newTask = {
     id,
-    createdTateTime,
-    finishedTateTime,
+    createdDateTime,
+    finishedDateTime,
     title,
     description,
     creatorId
@@ -75,9 +75,37 @@ app.get('/tasks/:id', (req, resp) => {
  #swagger.responses[400] = {description: "id does not exist"}
 */
   const id = parseInt(req.params.id)
-  const specificTask = tasks.find(object => object.id === id)
+  const specificTask = tasks.find(tasks => tasks.id === id)
   if (!specificTask) return resp.sendStatus(400)
   resp.json(specificTask)
+})
+
+app.put('/tasks/:id', (req, resp) => {
+  /*
+ #swagger.tags = ["tasks"]
+ #swagger.summary = 'Put a specific task'
+ #swagger.description = 'Put a specific task by its id'
+ #swagger.responses[200] = {description: "Task updated", schema:{$ref: "#/definitions/tasks"}}
+ #swagger.responses[400] = {description: "id does not exist"}
+*/
+  let id = parseInt(req.params.id)
+  const taskIndex = tasks.findIndex((tasks) => tasks.id === id)
+  const specificTask = tasks.find(tasks => tasks.id === id)
+  if (!specificTask) return resp.sendStatus(400)
+
+  const updatedTask = {
+    id: req.body.id,
+    createdDateTime: req.body.createdDateTime,
+    finishedDateTime: req.body.finishedDateTime,
+    title: req.body.title,
+    description: req.body.description,
+    creatorId: req.body.creatorId
+  }
+  while (tasks.map(task => task.id).includes(id)) {
+    id++
+  }
+  tasks.splice(taskIndex, 1, updatedTask)
+  resp.json(updatedTask).sendStatus(200)
 })
 app.listen(port, () => {
   console.log(`Is running on port ${port}`)
