@@ -1,12 +1,12 @@
 const swaggerAutogen = require('swagger-autogen')
 const outputFile = './swagger-output.json'
-const endpointsFiles = ['./bibliothek.js']
+const endpointsFiles = ['./todo.js']
 const config = {
   info: {
-    title: 'D.Library API',
-    description: 'API for a library with lends and books '
+    title: 'ToDo API',
+    description: 'API for a ToDo App to remember tasks '
   },
-  host: 'localhost:3004',
+  host: 'localhost:3000',
   securityDefinitions: {
     api_key: {
       type: 'apiKey',
@@ -25,11 +25,13 @@ const config = {
         stack: 'Error stack'
       }
     },
-    book: {
-      $name: 'Leos Biographie',
-      $pages: 69,
-      $rating: 4.20,
-      $isbn: 8400
+    tasks: {
+      $id: 0,
+      $created_date_time: 'now',
+      $finished_date_time: null,
+      $title: 'Create some random data',
+      $description: 'Create some random data for the documentation',
+      $creator_id: 0
     },
     lends: {
       $id: 100,
@@ -41,5 +43,5 @@ const config = {
   }
 }
 swaggerAutogen(outputFile, endpointsFiles, config).then(async () => {
-  await import('./bibliothek.js') // Your express api project's root file where the server starts
+  await import('./todo.js') // Your express api project's root file where the server starts
 })

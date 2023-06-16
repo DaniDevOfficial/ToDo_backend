@@ -7,7 +7,7 @@
     "swagger-ui-express": "^4.6.3"
   },
   "scripts": {
-    "start": "nodemon swaws.js --ignore swagger-output.json"
+    "start": "nodemon swagger.js --ignore swagger-output.json"
   },
   "devDependencies": {
     "eslint": "^8.42.0",
